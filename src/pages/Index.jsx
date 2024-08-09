@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
-import { useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useState, useRef } from "react";
 import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import FeaturedProducts from "../components/FeaturedProducts";
@@ -10,10 +10,23 @@ import BrandShowcase from "../components/BrandShowcase";
 
 const Index = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.8]);
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-black bg-opacity-50 backdrop-blur-md">
+    <div className="min-h-screen bg-black text-white" ref={ref}>
+      <motion.nav
+        className="fixed top-0 left-0 right-0 z-50 bg-black bg-opacity-50 backdrop-blur-md"
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <motion.h1
             initial={{ opacity: 0, y: -20 }}
@@ -71,7 +84,10 @@ const Index = () => {
         )}
       </nav>
 
-      <header className="h-screen flex items-center justify-center bg-[url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80')] bg-cover bg-center">
+      <motion.header
+        style={{ opacity, scale }}
+        className="h-screen flex items-center justify-center bg-[url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80')] bg-cover bg-center"
+      >
         <div className="text-center">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -94,12 +110,15 @@ const Index = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.6 }}
           >
-            <Button size="lg" className="bg-white text-black hover:bg-gray-200">
+            <Button
+              size="lg"
+              className="bg-white text-black hover:bg-gray-200 transition-all duration-300 transform hover:scale-105"
+            >
               Shop Now
             </Button>
           </motion.div>
         </div>
-      </header>
+      </motion.header>
 
       <main>
         <FeaturedProducts />

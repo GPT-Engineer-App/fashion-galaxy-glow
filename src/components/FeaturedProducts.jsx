@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -48,35 +48,53 @@ const FeaturedProducts = () => {
   return (
     <section className="py-16 bg-gray-900">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">Featured Products</h2>
+        <motion.h2
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-3xl md:text-4xl font-bold mb-8 text-center"
+        >
+          Featured Products
+        </motion.h2>
         <div className="relative">
           <div className="overflow-hidden">
-            <motion.div
-              className="flex"
-              animate={{ x: `${-currentIndex * 100}%` }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            >
-              {products.map((product) => (
-                <div key={product.id} className="w-full flex-shrink-0">
-                  <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-full h-64 object-cover"
-                    />
-                    <div className="p-4">
-                      <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
-                      <p className="text-gray-600">{product.price}</p>
+            <AnimatePresence initial={false}>
+              <motion.div
+                key={currentIndex}
+                className="flex"
+                initial={{ opacity: 0, x: 300 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -300 }}
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              >
+                {products.map((product, index) => (
+                  <motion.div
+                    key={product.id}
+                    className="w-full flex-shrink-0"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <div className="bg-white rounded-lg shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105">
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        className="w-full h-64 object-cover"
+                      />
+                      <div className="p-4">
+                        <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
+                        <p className="text-gray-600">{product.price}</p>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              ))}
-            </motion.div>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </AnimatePresence>
           </div>
           <Button
             variant="outline"
             size="icon"
-            className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75"
+            className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 transition-all duration-300"
             onClick={prevProduct}
           >
             <ChevronLeft className="h-6 w-6" />
@@ -84,7 +102,7 @@ const FeaturedProducts = () => {
           <Button
             variant="outline"
             size="icon"
-            className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75"
+            className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 transition-all duration-300"
             onClick={nextProduct}
           >
             <ChevronRight className="h-6 w-6" />
