@@ -4,6 +4,9 @@ import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import FeaturedProducts from "../components/FeaturedProducts";
 import Newsletter from "../components/Newsletter";
+import Categories from "../components/Categories";
+import Testimonials from "../components/Testimonials";
+import BrandShowcase from "../components/BrandShowcase";
 
 const Index = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -100,6 +103,9 @@ const Index = () => {
 
       <main>
         <FeaturedProducts />
+        <Categories />
+        <Testimonials />
+        <BrandShowcase />
         <Newsletter />
       </main>
 
