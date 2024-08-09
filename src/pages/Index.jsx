@@ -82,7 +82,7 @@ const Index = () => {
             ))}
           </motion.div>
         )}
-      </nav>
+      </motion.nav>
 
       <motion.header
         style={{ opacity, scale }}
